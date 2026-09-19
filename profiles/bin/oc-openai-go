@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# OCX profile wrapper: openai + opencode go models preset
+export OH_MY_OPENCODE_SLIM_PRESET=openai-go
+exec opencode --port 0 "$@"

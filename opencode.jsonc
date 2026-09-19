@@ -1,0 +1,94 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"plugin": [
+		"@warp-dot-dev/opencode-warp",
+		"oh-my-opencode-slim",
+		"opencode-herdr",
+		"opencode-openai-codex-auth",
+		"compound-engineering@git+https://github.com/EveryInc/compound-engineering-plugin.git",
+	],
+	"agent": {
+		"explore": {
+			"disable": true,
+		},
+		"general": {
+			"disable": true,
+		},
+	},
+	"provider": {
+		"kimi-for-coding": {
+			"npm": "@ai-sdk/openai-compatible",
+			"name": "Kimi For Coding",
+			"options": {
+				"baseURL": "https://api.kimi.ai/coding/v1",
+			},
+			"models": {
+				"kimi-for-coding": {
+					"name": "Kimi For Coding",
+					"limit": { "context": 262144, "output": 65536 },
+				},
+			},
+		},
+	},
+	"lsp": true,
+	"mcp": {
+		"supabase": {
+			"type": "remote",
+			"url": "https://mcp.supabase.com/mcp",
+			"enabled": true,
+		},
+		"shopify-dev-mcp": {
+			"type": "local",
+			"command": ["npx", "-y", "@shopify/dev-mcp@latest"],
+			"enabled": false,
+		},
+		"github": {
+			"type": "local",
+			"command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+			"environment": {
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_ACCESS_TOKEN}",
+			},
+			"enabled": true,
+		},
+		"stitch": {
+			"type": "remote",
+			"url": "https://stitch.googleapis.com/mcp",
+			"enabled": false,
+			"headers": {
+				"X-Goog-Api-Key": "{env:STITCH_API_KEY}",
+			},
+		},
+		"gsd": {
+			"type": "local",
+			"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server"],
+			"enabled": true,
+		},
+		"homeassistant": {
+			"type": "local",
+			"command": ["hass-mcp"],
+			"environment": {
+				"HASS_URL": "http://192.168.20.30:8123",
+				"HASS_TOKEN": "{env:HASS_TOKEN}",
+			},
+			"enabled": true,
+		},
+		"claude_design": {
+			"type": "remote",
+			"url": "https://api.anthropic.com/v1/design/mcp",
+			"enabled": false,
+		},
+	},
+	"permission": {
+		"read": {
+			"*": "allow",
+			"*.env": "deny",
+			"*.env.*": "deny",
+			"*.env.example": "allow",
+			"~/.config/opencode/gsd-core/*": "allow",
+		},
+		"external_directory": {
+			"/**/*": "allow",
+			"~/.config/opencode/gsd-core/*": "allow",
+		},
+	},
+}

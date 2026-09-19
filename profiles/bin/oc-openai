@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# OCX profile wrapper: openai preset
+export OH_MY_OPENCODE_SLIM_PRESET=openai
+exec opencode --port 0 "$@"

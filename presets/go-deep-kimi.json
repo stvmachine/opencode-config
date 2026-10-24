@@ -1,20 +1,13 @@
 {
 	"orchestrator": {
 		"model": "opencode-go/glm-5.2",
-		"skills": [
-			"*"
-		],
-		"mcps": [
-			"*",
-			"!context7"
-		]
+		"skills": ["*"],
+		"mcps": ["*", "!context7"]
 	},
 	"oracle": {
 		"model": "deepseek/deepseek-v4-pro",
 		"variant": "max",
-		"skills": [
-			"simplify"
-		],
+		"skills": ["simplify"],
 		"mcps": []
 	},
 	"council": {
@@ -26,11 +19,7 @@
 	"librarian": {
 		"model": "deepseek/deepseek-v4-flash",
 		"skills": [],
-		"mcps": [
-			"websearch",
-			"context7",
-			"gh_grep"
-		]
+		"mcps": ["websearch", "context7", "gh_grep"]
 	},
 	"explorer": {
 		"model": "deepseek/deepseek-v4-pro",

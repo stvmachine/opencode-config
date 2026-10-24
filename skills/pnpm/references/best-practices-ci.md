@@ -19,23 +19,23 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile   # or: pnpm ci
-      - run: pnpm test
-      - run: pnpm build
+            - run: pnpm install --frozen-lockfile # or: pnpm ci
+            - run: pnpm test
+            - run: pnpm build
 ```
 
 > `pnpm ci` (aliases `clean-install`, `install-clean`) = `pnpm clean` + `pnpm install --frozen-lockfile`, ideal for fully reproducible CI builds.
@@ -47,45 +47,45 @@ For larger projects, cache the pnpm store:
 ```yaml
 - uses: pnpm/action-setup@v4
   with:
-    version: 10
+      version: 10
 
 - name: Get pnpm store directory
   shell: bash
   run: |
-    echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
 - uses: actions/cache@v4
   name: Setup pnpm cache
   with:
-    path: ${{ env.STORE_PATH }}
-    key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-    restore-keys: |
-      ${{ runner.os }}-pnpm-store-
+      path: ${{ env.STORE_PATH }}
+      key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
 - run: pnpm install --frozen-lockfile
 ```
 
-> **Trust:** only cache/restore the pnpm store and cache dir between *trusted* jobs. A store an untrusted job can write to must not be reused by trusted jobs — it is part of pnpm's trust domain.
+> **Trust:** only cache/restore the pnpm store and cache dir between _trusted_ jobs. A store an untrusted job can write to must not be reused by trusted jobs — it is part of pnpm's trust domain.
 
 ### Matrix Testing
 
 ```yaml
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [18, 20, 22]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+                node: [18, 20, 22]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node }}
+                  cache: "pnpm"
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm test
 ```
 
 ## GitLab CI
@@ -94,38 +94,38 @@ jobs:
 image: node:20
 
 stages:
-  - install
-  - test
-  - build
+    - install
+    - test
+    - build
 
 variables:
-  PNPM_HOME: /root/.local/share/pnpm
-  PATH: $PNPM_HOME:$PATH
+    PNPM_HOME: /root/.local/share/pnpm
+    PATH: $PNPM_HOME:$PATH
 
 before_script:
-  - corepack enable
-  - corepack prepare pnpm@latest --activate
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - .pnpm-store
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - .pnpm-store
 
 install:
-  stage: install
-  script:
-    - pnpm config set store-dir .pnpm-store
-    - pnpm install --frozen-lockfile
+    stage: install
+    script:
+        - pnpm config set store-dir .pnpm-store
+        - pnpm install --frozen-lockfile
 
 test:
-  stage: test
-  script:
-    - pnpm test
+    stage: test
+    script:
+        - pnpm test
 
 build:
-  stage: build
-  script:
-    - pnpm build
+    stage: build
+    script:
+        - pnpm build
 ```
 
 ## Docker
@@ -227,7 +227,7 @@ Use Corepack to pin the pnpm version:
 ```json
 // package.json
 {
-  "packageManager": "pnpm@10.0.0"
+	"packageManager": "pnpm@10.0.0"
 }
 ```
 
@@ -246,37 +246,37 @@ For range-based pinning use `devEngines.packageManager` (resolved version stored
 ```yaml
 - name: Build changed packages
   run: |
-    pnpm --filter "...[origin/main]" build
+      pnpm --filter "...[origin/main]" build
 ```
 
 ### Parallel Jobs per Package
 
 ```yaml
 jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      packages: ${{ steps.changes.outputs.packages }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - id: changes
-        run: |
-          echo "packages=$(pnpm --filter '...[origin/main]' list --json | jq -c '[.[].name]')" >> $GITHUB_OUTPUT
+    detect-changes:
+        runs-on: ubuntu-latest
+        outputs:
+            packages: ${{ steps.changes.outputs.packages }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - id: changes
+              run: |
+                  echo "packages=$(pnpm --filter '...[origin/main]' list --json | jq -c '[.[].name]')" >> $GITHUB_OUTPUT
 
-  test:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.packages != '[]'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: ${{ fromJson(needs.detect-changes.outputs.packages) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter ${{ matrix.package }} test
+    test:
+        needs: detect-changes
+        if: needs.detect-changes.outputs.packages != '[]'
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                package: ${{ fromJson(needs.detect-changes.outputs.packages) }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm --filter ${{ matrix.package }} test
 ```
 
 ## Best Practices Summary
@@ -295,4 +295,3 @@ Source references:
 - https://pnpm.io/cli/ci
 - https://github.com/pnpm/action-setup
 -->
-

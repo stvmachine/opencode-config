@@ -13,27 +13,27 @@ Define a catalog in `pnpm-workspace.yaml`:
 
 ```yaml
 packages:
-  - 'packages/*'
+    - "packages/*"
 
 catalog:
-  react: ^18.2.0
-  react-dom: ^18.2.0
-  typescript: ~5.3.0
-  vite: ^5.0.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ~5.3.0
+    vite: ^5.0.0
 ```
 
 Reference in `package.json` with `catalog:`:
 
 ```json
 {
-  "dependencies": {
-    "react": "catalog:",
-    "react-dom": "catalog:"
-  },
-  "devDependencies": {
-    "typescript": "catalog:",
-    "vite": "catalog:"
-  }
+	"dependencies": {
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"devDependencies": {
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
 }
 ```
 
@@ -45,38 +45,38 @@ Create multiple catalogs for different scenarios:
 
 ```yaml
 packages:
-  - 'packages/*'
+    - "packages/*"
 
 # Default catalog
 catalog:
-  lodash: ^4.17.21
+    lodash: ^4.17.21
 
 # Named catalogs
 catalogs:
-  react17:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  
-  react18:
-    react: ^18.2.0
-    react-dom: ^18.2.0
-  
-  testing:
-    vitest: ^1.0.0
-    "@testing-library/react": ^14.0.0
+    react17:
+        react: ^17.0.2
+        react-dom: ^17.0.2
+
+    react18:
+        react: ^18.2.0
+        react-dom: ^18.2.0
+
+    testing:
+        vitest: ^1.0.0
+        "@testing-library/react": ^14.0.0
 ```
 
 Reference named catalogs:
 
 ```json
 {
-  "dependencies": {
-    "react": "catalog:react18",
-    "react-dom": "catalog:react18"
-  },
-  "devDependencies": {
-    "vitest": "catalog:testing"
-  }
+	"dependencies": {
+		"react": "catalog:react18",
+		"react-dom": "catalog:react18"
+	},
+	"devDependencies": {
+		"vitest": "catalog:testing"
+	}
 }
 ```
 
@@ -86,19 +86,19 @@ Reference a catalog from `overrides` so the version lives in exactly one place:
 
 ```yaml title="pnpm-workspace.yaml"
 catalog:
-  foo: ^1.0.0
+    foo: ^1.0.0
 
 overrides:
-  foo: 'catalog:'          # or catalog:<name>
+    foo: "catalog:" # or catalog:<name>
 ```
 
 ## Settings
 
 ```yaml title="pnpm-workspace.yaml"
 # How `pnpm add` interacts with the default catalog (v10.12+)
-catalogMode: manual        # manual (default) | prefer | strict
+catalogMode: manual # manual (default) | prefer | strict
 # strict: only catalog versions allowed; prefer: fall back if no match
-cleanupUnusedCatalogs: true  # remove unused catalog entries on install (v10.15+)
+cleanupUnusedCatalogs: true # remove unused catalog entries on install (v10.15+)
 ```
 
 ## Benefits
@@ -110,12 +110,12 @@ cleanupUnusedCatalogs: true  # remove unused catalog entries on install (v10.15+
 
 ## Catalog vs Overrides
 
-| Feature | Catalogs | Overrides |
-|---------|----------|-----------|
-| Purpose | Define versions for direct dependencies | Force versions for any dependency |
-| Scope | Direct dependencies only | All dependencies (including transitive) |
-| Usage | `"pkg": "catalog:"` | Applied automatically |
-| Opt-in | Explicit per package.json | Global to workspace |
+| Feature | Catalogs                                | Overrides                               |
+| ------- | --------------------------------------- | --------------------------------------- |
+| Purpose | Define versions for direct dependencies | Force versions for any dependency       |
+| Scope   | Direct dependencies only                | All dependencies (including transitive) |
+| Usage   | `"pkg": "catalog:"`                     | Applied automatically                   |
+| Opt-in  | Explicit per package.json               | Global to workspace                     |
 
 ## Publishing with Catalogs
 
@@ -144,8 +144,8 @@ If you're using overrides for version consistency:
 ```yaml
 # Before (using overrides)
 overrides:
-  react: ^18.2.0
-  react-dom: ^18.2.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
 ```
 
 Migrate to catalogs for cleaner dependency management:
@@ -153,8 +153,8 @@ Migrate to catalogs for cleaner dependency management:
 ```yaml
 # After (using catalogs)
 catalog:
-  react: ^18.2.0
-  react-dom: ^18.2.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
 ```
 
 Then update package.json files to use `catalog:`. To migrate an existing workspace automatically:
@@ -172,15 +172,15 @@ pnpx codemod pnpm/catalog
 
 ```yaml
 catalog:
-  # External shared dependencies
-  lodash: ^4.17.21
-  zod: ^3.22.0
+    # External shared dependencies
+    lodash: ^4.17.21
+    zod: ^3.22.0
 
 # Internal packages use workspace: protocol instead
 # "dependencies": { "@myorg/utils": "workspace:^" }
 ```
 
-<!-- 
+<!--
 Source references:
 - https://pnpm.io/catalogs
 -->

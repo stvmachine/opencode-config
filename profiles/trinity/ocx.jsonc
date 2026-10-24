@@ -7,8 +7,8 @@
 		"**/CONTEXT.md",
 		"**/.opencode/**",
 		"**/opencode.jsonc",
-		"**/opencode.json"
+		"**/opencode.json",
 	],
 	"bin": "/Users/estvmachine/.config/opencode/profiles/bin/oc-trinity",
-	"include": []
+	"include": [],
 }

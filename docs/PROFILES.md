@@ -42,16 +42,16 @@ them into the root `oh-my-opencode-slim.json` with `scripts/build-presets.js`.
 
 ## Profile → Preset Mapping
 
-| Profile | Wrapper Script | Preset Used | Defined In |
-|---------|---------------|-------------|------------|
+| Profile       | Wrapper Script                | Preset Used   | Defined In                                                                                             |
+| ------------- | ----------------------------- | ------------- | ------------------------------------------------------------------------------------------------------ |
 | `claude-work` | `profiles/bin/oc-claude-work` | `claude-work` | root `oh-my-opencode-slim.json` → `presets.claude-work` (Claude Max via `opencode-with-claude` plugin) |
-| `default` | `profiles/bin/oc-default` | `sol-kimi` | root `oh-my-opencode-slim.json` → `presets.sol-kimi` |
-| `free` | `profiles/bin/oc-free` | `free` | root `oh-my-opencode-slim.json` → `presets.free` |
-| `kimi` | `profiles/bin/oc-kimi` | `kimi` | root `oh-my-opencode-slim.json` → `presets.kimi` |
-| `kimi-go` | `profiles/bin/oc-kimi-go` | `kimi-go` | root `oh-my-opencode-slim.json` → `presets.kimi-go` |
-| `openai` | `profiles/bin/oc-openai` | `openai` | root `oh-my-opencode-slim.json` → `presets.openai` |
-| `openai-go` | `profiles/bin/oc-openai-go` | `openai-go` | root `oh-my-opencode-slim.json` → `presets.openai-go` |
-| `sol-kimi` | `profiles/bin/oc-sol-kimi` | `sol-kimi` | root `oh-my-opencode-slim.json` → `presets.sol-kimi` |
+| `default`     | `profiles/bin/oc-default`     | `sol-kimi`    | root `oh-my-opencode-slim.json` → `presets.sol-kimi`                                                   |
+| `free`        | `profiles/bin/oc-free`        | `free`        | root `oh-my-opencode-slim.json` → `presets.free`                                                       |
+| `kimi`        | `profiles/bin/oc-kimi`        | `kimi`        | root `oh-my-opencode-slim.json` → `presets.kimi`                                                       |
+| `kimi-go`     | `profiles/bin/oc-kimi-go`     | `kimi-go`     | root `oh-my-opencode-slim.json` → `presets.kimi-go`                                                    |
+| `openai`      | `profiles/bin/oc-openai`      | `openai`      | root `oh-my-opencode-slim.json` → `presets.openai`                                                     |
+| `openai-go`   | `profiles/bin/oc-openai-go`   | `openai-go`   | root `oh-my-opencode-slim.json` → `presets.openai-go`                                                  |
+| `sol-kimi`    | `profiles/bin/oc-sol-kimi`    | `sol-kimi`    | root `oh-my-opencode-slim.json` → `presets.sol-kimi`                                                   |
 
 Note: `oc-default` execs plain `opencode` (no `--port 0`). All other wrappers pass
 `--port 0` before `"$@"` to enable the opencode-herdr plugin (`opencode attach --session <id>`).
@@ -86,52 +86,52 @@ The profile name `default` is normalized to `sol-kimi` in all of the above cases
 
 1. Create the profile directory and `ocx.jsonc`:
 
-   ```bash
-   mkdir -p ~/.config/opencode/profiles/my-profile
-   ```
+    ```bash
+    mkdir -p ~/.config/opencode/profiles/my-profile
+    ```
 
 2. Write `ocx.jsonc` (note: `bin` must be an **absolute** path pointing at your installed
    wrapper script):
 
-   ```jsonc
-   {
-     "$schema": "https://ocx.kdco.dev/schemas/profile.json",
-     "registries": {},
-     "renameWindow": true,
-     "bin": "/absolute/path/to/my-opencode-config/profiles/bin/oc-my-profile",
-     "exclude": [
-       "**/CLAUDE.md",
-       "**/CONTEXT.md",
-       "**/.opencode/**",
-       "**/opencode.jsonc",
-       "**/opencode.json"
-     ],
-     "include": []
-   }
-   ```
+    ```jsonc
+    {
+    	"$schema": "https://ocx.kdco.dev/schemas/profile.json",
+    	"registries": {},
+    	"renameWindow": true,
+    	"bin": "/absolute/path/to/my-opencode-config/profiles/bin/oc-my-profile",
+    	"exclude": [
+    		"**/CLAUDE.md",
+    		"**/CONTEXT.md",
+    		"**/.opencode/**",
+    		"**/opencode.jsonc",
+    		"**/opencode.json",
+    	],
+    	"include": [],
+    }
+    ```
 
 3. Create the wrapper in this repo. The profile name is derived from the filename, so the
    wrapper only needs to source the shared helper:
 
-   ```bash
-   cat > profiles/bin/oc-my-profile << 'EOF'
-   #!/usr/bin/env bash
-   source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
-   exec opencode --port 0 "$@"
-   EOF
-   chmod +x profiles/bin/oc-my-profile
-   ```
+    ```bash
+    cat > profiles/bin/oc-my-profile << 'EOF'
+    #!/usr/bin/env bash
+    source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
+    exec opencode --port 0 "$@"
+    EOF
+    chmod +x profiles/bin/oc-my-profile
+    ```
 
-   `oc-my-profile` produces preset `my-profile` automatically. If your preset has a
-   different name, either name the wrapper after the preset or set
-   `OH_MY_OPENCODE_SLIM_PRESET` explicitly when launching. The one built-in exception is
-   `default`, which maps to `sol-kimi`.
+    `oc-my-profile` produces preset `my-profile` automatically. If your preset has a
+    different name, either name the wrapper after the preset or set
+    `OH_MY_OPENCODE_SLIM_PRESET` explicitly when launching. The one built-in exception is
+    `default`, which maps to `sol-kimi`.
 
 4. Define the preset fragment in this repo as `presets/my-profile.json`, then rebuild:
 
-   ```bash
-   node scripts/build-presets.js
-   ```
+    ```bash
+    node scripts/build-presets.js
+    ```
 
 5. Copy/symlink the updated root `oh-my-opencode-slim.json` into `~/.config/opencode/`.
 

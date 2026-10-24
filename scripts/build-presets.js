@@ -12,7 +12,7 @@
  */
 
 const { readFileSync, writeFileSync, readdirSync } = require("node:fs");
-const { join, dirname } = require("node:path");
+const { join } = require("node:path");
 
 const ROOT = join(__dirname, "..");
 const PRESETS_DIR = join(ROOT, "presets");
@@ -21,7 +21,17 @@ const OUTPUT = join(ROOT, "oh-my-opencode-slim.json");
 const SCHEMA = "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json";
 
 // Fixed merge order for deterministic output.
-const PRESET_ORDER = ["trinity", "openai", "openai-go", "claude-work", "sol-kimi", "go-deep-kimi", "kimi", "kimi-go", "free"];
+const PRESET_ORDER = [
+	"trinity",
+	"openai",
+	"openai-go",
+	"claude-work",
+	"sol-kimi",
+	"go-deep-kimi",
+	"kimi",
+	"kimi-go",
+	"free",
+];
 
 function readJson(path) {
 	return JSON.parse(readFileSync(path, "utf8"));

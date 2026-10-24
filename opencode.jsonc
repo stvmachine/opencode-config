@@ -1,6 +1,6 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-	"plugin": [
+	"plugins": [
 		"@warp-dot-dev/opencode-warp",
 		"opencode-herdr",
 		"opencode-openai-codex-auth",
@@ -8,30 +8,30 @@
 		"oh-my-opencode-slim",
 		"opencode-with-claude",
 	],
-	"agent": {
+	"agents": {
 		"explore": {
-			"disable": true,
+			"disabled": true,
 		},
 		"general": {
-			"disable": true,
+			"disabled": true,
 		},
 	},
-	"provider": {
+	"providers": {
 		"anthropic": {
-			"options": {
+			"settings": {
 				"baseURL": "http://127.0.0.1:3456",
 				"apiKey": "dummy",
 			},
 		},
 		"openai": {
-			"options": {
+			"settings": {
 				"apiKey": "{file:~/.config/opencode/secrets/openai_api_key}",
 			},
 		},
 		"kimi-for-coding": {
-			"npm": "@ai-sdk/openai-compatible",
+			"package": "@ai-sdk/openai-compatible",
 			"name": "Kimi For Coding",
-			"options": {
+			"settings": {
 				"baseURL": "https://api.kimi.ai/coding/v1",
 			},
 			"models": {
@@ -43,80 +43,74 @@
 		},
 	},
 	"lsp": true,
-	"skills": {
-		"paths": ["/Users/estvmachine/Projects/personal/my-opencode-config/skills"],
-	},
+	"skills": ["/Users/estvmachine/Projects/personal/my-opencode-config/skills"],
 	"mcp": {
-		"supabase": {
-			"type": "remote",
-			"url": "https://mcp.supabase.com/mcp",
-			"enabled": true,
-		},
-		"shopify-dev-mcp": {
-			"type": "local",
-			"command": ["npx", "-y", "@shopify/dev-mcp@latest"],
-			"enabled": false,
-		},
-		"github": {
-			"type": "local",
-			"command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-			"environment": {
-				"GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.config/opencode/secrets/github_token}",
+		"servers": {
+			"supabase": {
+				"type": "remote",
+				"url": "https://mcp.supabase.com/mcp",
 			},
-			"enabled": true,
-		},
-		"stitch": {
-			"type": "remote",
-			"url": "https://stitch.googleapis.com/mcp",
-			"enabled": false,
-			"headers": {
-				"X-Goog-Api-Key": "{file:~/.config/opencode/secrets/stitch_api_key}",
+			"shopify-dev-mcp": {
+				"type": "local",
+				"command": ["npx", "-y", "@shopify/dev-mcp@latest"],
+				"disabled": true,
 			},
-		},
-		"gsd": {
-			"type": "local",
-			"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server"],
-			"enabled": true,
-		},
-		"homeassistant": {
-			"type": "local",
-			"command": ["hass-mcp"],
-			"environment": {
-				"HASS_URL": "http://192.168.20.30:8123",
-				"HASS_TOKEN": "{file:~/.config/opencode/secrets/hass_token}",
+			"github": {
+				"type": "local",
+				"command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+				"environment": {
+					"GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.config/opencode/secrets/github_token}",
+				},
 			},
-			"enabled": true,
-		},
-		"claude_design": {
-			"type": "remote",
-			"url": "https://api.anthropic.com/v1/design/mcp",
-			"enabled": false,
-		},
-		"firecrawl": {
-			"type": "local",
-			"command": ["npx", "-y", "firecrawl-mcp"],
-			"environment": {
-				"FIRECRAWL_API_KEY": "{file:~/.config/opencode/secrets/firecrawl_api_key}",
+			"stitch": {
+				"type": "remote",
+				"url": "https://stitch.googleapis.com/mcp",
+				"disabled": true,
+				"headers": {
+					"X-Goog-Api-Key": "{file:~/.config/opencode/secrets/stitch_api_key}",
+				},
 			},
-			"enabled": true,
-		},
-		"codegraph": {
-			"type": "local",
-			"command": ["npx", "-y", "@colbymchenry/codegraph", "serve", "--mcp"],
-			"enabled": true,
+			"gsd": {
+				"type": "local",
+				"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server"],
+			},
+			"homeassistant": {
+				"type": "local",
+				"command": ["hass-mcp"],
+				"environment": {
+					"HASS_URL": "http://192.168.20.30:8123",
+					"HASS_TOKEN": "{file:~/.config/opencode/secrets/hass_token}",
+				},
+			},
+			"claude_design": {
+				"type": "remote",
+				"url": "https://api.anthropic.com/v1/design/mcp",
+				"disabled": true,
+			},
+			"firecrawl": {
+				"type": "local",
+				"command": ["npx", "-y", "firecrawl-mcp"],
+				"environment": {
+					"FIRECRAWL_API_KEY": "{file:~/.config/opencode/secrets/firecrawl_api_key}",
+				},
+			},
+			"codegraph": {
+				"type": "local",
+				"command": ["npx", "-y", "@colbymchenry/codegraph", "serve", "--mcp"],
+			},
 		},
 	},
-	"permission": {
-		"read": {
-			"*": "allow",
-			"*.env": "deny",
-			"*.env.*": "deny",
-			"*.env.example": "allow",
-			"~/.config/opencode/gsd-core/*": "allow",
+	"permissions": [
+		{ "action": "read", "resource": "*", "effect": "allow" },
+		{ "action": "read", "resource": "*.env", "effect": "deny" },
+		{ "action": "read", "resource": "*.env.*", "effect": "deny" },
+		{ "action": "read", "resource": "*.env.example", "effect": "allow" },
+		{ "action": "read", "resource": "~/.config/opencode/gsd-core/*", "effect": "allow" },
+		{ "action": "external_directory", "resource": "/**/*", "effect": "allow" },
+		{
+			"action": "external_directory",
+			"resource": "~/.config/opencode/gsd-core/*",
+			"effect": "allow",
 		},
-		"external_directory": {
-			"/**/*": "allow",
-			"~/.config/opencode/gsd-core/*": "allow",
-		},
-	},
+	],
 }

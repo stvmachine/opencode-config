@@ -1,0 +1,28 @@
+{
+	"name": "my-opencode-config",
+	"version": "1.0.0",
+	"description": "Personal OpenCode configuration: the main `opencode.jsonc`, OCX profiles with wrapper scripts, and oh-my-opencode-slim presets — kept as fragments and merged by a small build script.",
+	"keywords": [],
+	"homepage": "https://github.com/stvmachine/opencode-config#readme",
+	"bugs": {
+		"url": "https://github.com/stvmachine/opencode-config/issues"
+	},
+	"license": "ISC",
+	"author": "",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/stvmachine/opencode-config.git"
+	},
+	"directories": {
+		"doc": "docs"
+	},
+	"main": "index.js",
+	"scripts": {
+		"lint": "oxlint .",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"devDependencies": {
+		"oxfmt": "^0.74.0",
+		"oxlint": "^1.89.0"
+	}
+}

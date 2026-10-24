@@ -65,12 +65,12 @@ Secrets are read from files under `~/.config/opencode/secrets/` via opencode's
 `{file:...}` config interpolation (dir `700`, files `600`) — no shell exports
 needed:
 
-| File | Used by | Notes |
-|------|---------|-------|
-| `~/.config/opencode/secrets/hass_token` | homeassistant MCP server | Home Assistant long-lived access token |
-| `~/.config/opencode/secrets/firecrawl_api_key` | firecrawl MCP server | your Firecrawl API key (free tier at firecrawl.dev) |
-| `~/.config/opencode/secrets/github_token` | github MCP server | populate with `gh auth token > ~/.config/opencode/secrets/github_token` (refreshes as gh rotates it) |
-| `~/.config/opencode/secrets/stitch_api_key` | stitch MCP server | optional — server is disabled by default |
+| File                                           | Used by                  | Notes                                                                                                |
+| ---------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `~/.config/opencode/secrets/hass_token`        | homeassistant MCP server | Home Assistant long-lived access token                                                               |
+| `~/.config/opencode/secrets/firecrawl_api_key` | firecrawl MCP server     | your Firecrawl API key (free tier at firecrawl.dev)                                                  |
+| `~/.config/opencode/secrets/github_token`      | github MCP server        | populate with `gh auth token > ~/.config/opencode/secrets/github_token` (refreshes as gh rotates it) |
+| `~/.config/opencode/secrets/stitch_api_key`    | stitch MCP server        | optional — server is disabled by default                                                             |
 
 ## Usage
 
@@ -80,14 +80,14 @@ Launch a profile with ocx:
 ocx opencode -p <profile>
 ```
 
-| Profile | Preset | Notes |
-|---------|--------|-------|
-| `default` | `sol-kimi` | day-to-day config; no `--port 0` |
-| `free` | `free` | free models only; `--port 0` (herdr) |
-| `kimi` | `kimi` | kimi models; `--port 0` |
-| `openai` | `openai` | OpenAI models; `--port 0` |
-| `openai-go` | `openai-go` | OpenAI + opencode-go models; `--port 0` |
-| `sol-kimi` | `sol-kimi` | sol orchestrator + kimi workers; `--port 0` |
+| Profile     | Preset      | Notes                                       |
+| ----------- | ----------- | ------------------------------------------- |
+| `default`   | `sol-kimi`  | day-to-day config; no `--port 0`            |
+| `free`      | `free`      | free models only; `--port 0` (herdr)        |
+| `kimi`      | `kimi`      | kimi models; `--port 0`                     |
+| `openai`    | `openai`    | OpenAI models; `--port 0`                   |
+| `openai-go` | `openai-go` | OpenAI + opencode-go models; `--port 0`     |
+| `sol-kimi`  | `sol-kimi`  | sol orchestrator + kimi workers; `--port 0` |
 
 See [docs/PROFILES.md](docs/PROFILES.md) for how profiles connect to presets.
 

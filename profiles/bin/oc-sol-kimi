@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # OCX profile wrapper: sol-kimi preset
-export OH_MY_OPENCODE_SLIM_PRESET=sol-kimi
+source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
 exec opencode --port 0 "$@"

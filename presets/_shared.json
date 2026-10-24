@@ -1,11 +1,24 @@
 {
-  "preset": "free",
+  "preset": "kimi",
   "multiplexer": {
     "type": "auto",
     "layout": "main-vertical",
     "main_pane_size": 60
   },
   "disabled_agents": [],
+  "fallback": {
+    "enabled": true
+  },
+  "council": {
+    "default_preset": "trinity",
+    "presets": {
+      "trinity": {
+        "claude": { "model": "anthropic/claude-sonnet-5-5", "variant": "high" },
+        "openai": { "model": "openai/gpt-5.6-terra", "variant": "high" },
+        "opencode": { "model": "opencode-go/glm-5.3", "variant": "high" }
+      }
+    }
+  },
   "companion": {
     "enabled": true,
     "position": "bottom-right",

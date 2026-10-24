@@ -15,7 +15,10 @@
     "skills": [
       "simplify"
     ],
-    "mcps": []
+    "mcps": [
+      "codegraph",
+      "firecrawl"
+    ]
   },
   "council": {
     "model": "kimi-for-coding/kimi-for-coding",
@@ -29,26 +32,41 @@
     "mcps": [
       "websearch",
       "context7",
-      "gh_grep"
+      "gh_grep",
+      "firecrawl"
     ]
   },
   "explorer": {
     "model": "kimi-for-coding/kimi-for-coding",
     "variant": "high",
     "skills": [],
-    "mcps": []
+    "mcps": [
+      "codegraph"
+    ]
   },
   "designer": {
     "model": "kimi-for-coding/kimi-for-coding",
     "variant": "high",
-    "skills": [],
+    "skills": [
+      "make-interfaces-feel-better",
+      "vue",
+      "nuxt"
+    ],
     "mcps": []
   },
   "fixer": {
     "model": "kimi-for-coding/kimi-for-coding",
     "variant": "high",
-    "skills": [],
-    "mcps": []
+    "skills": [
+      "vitest",
+      "pnpm",
+      "vite",
+      "tsdown"
+    ],
+    "mcps": [
+      "codegraph",
+      "firecrawl"
+    ]
   },
   "observer": {
     "model": "kimi-for-coding/kimi-for-coding",

@@ -1,0 +1,44 @@
+{
+	"orchestrator": {
+		"model": "anthropic/claude-opus-4-8",
+		"variant": "high",
+		"skills": ["*"],
+		"mcps": ["*", "!context7"]
+	},
+	"oracle": {
+		"model": "anthropic/claude-opus-4-8",
+		"variant": "high",
+		"skills": ["simplify"],
+		"mcps": []
+	},
+	"librarian": {
+		"model": "anthropic/claude-sonnet-4-6",
+		"variant": "low",
+		"skills": [],
+		"mcps": ["websearch", "context7", "gh_grep"]
+	},
+	"explorer": {
+		"model": "anthropic/claude-sonnet-4-6",
+		"variant": "low",
+		"skills": [],
+		"mcps": []
+	},
+	"designer": {
+		"model": "anthropic/claude-sonnet-4-6",
+		"variant": "medium",
+		"skills": [],
+		"mcps": []
+	},
+	"fixer": {
+		"model": "anthropic/claude-sonnet-4-6",
+		"variant": "low",
+		"skills": [],
+		"mcps": []
+	},
+	"observer": {
+		"model": "anthropic/claude-sonnet-4-6",
+		"variant": "high",
+		"skills": [],
+		"mcps": []
+	}
+}

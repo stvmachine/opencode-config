@@ -2,10 +2,11 @@
 	"$schema": "https://opencode.ai/config.json",
 	"plugin": [
 		"@warp-dot-dev/opencode-warp",
-		"oh-my-opencode-slim",
 		"opencode-herdr",
 		"opencode-openai-codex-auth",
 		"compound-engineering@git+https://github.com/EveryInc/compound-engineering-plugin.git",
+		"oh-my-opencode-slim",
+		"opencode-with-claude",
 	],
 	"agent": {
 		"explore": {
@@ -16,6 +17,17 @@
 		},
 	},
 	"provider": {
+		"anthropic": {
+			"options": {
+				"baseURL": "http://127.0.0.1:3456",
+				"apiKey": "dummy",
+			},
+		},
+		"openai": {
+			"options": {
+				"apiKey": "{file:~/.config/opencode/secrets/openai_api_key}",
+			},
+		},
 		"kimi-for-coding": {
 			"npm": "@ai-sdk/openai-compatible",
 			"name": "Kimi For Coding",
@@ -31,6 +43,9 @@
 		},
 	},
 	"lsp": true,
+	"skills": {
+		"paths": ["/Users/estvmachine/Projects/personal/my-opencode-config/skills"],
+	},
 	"mcp": {
 		"supabase": {
 			"type": "remote",
@@ -46,7 +61,7 @@
 			"type": "local",
 			"command": ["npx", "-y", "@modelcontextprotocol/server-github"],
 			"environment": {
-				"GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_ACCESS_TOKEN}",
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.config/opencode/secrets/github_token}",
 			},
 			"enabled": true,
 		},
@@ -55,7 +70,7 @@
 			"url": "https://stitch.googleapis.com/mcp",
 			"enabled": false,
 			"headers": {
-				"X-Goog-Api-Key": "{env:STITCH_API_KEY}",
+				"X-Goog-Api-Key": "{file:~/.config/opencode/secrets/stitch_api_key}",
 			},
 		},
 		"gsd": {
@@ -68,7 +83,7 @@
 			"command": ["hass-mcp"],
 			"environment": {
 				"HASS_URL": "http://192.168.20.30:8123",
-				"HASS_TOKEN": "{env:HASS_TOKEN}",
+				"HASS_TOKEN": "{file:~/.config/opencode/secrets/hass_token}",
 			},
 			"enabled": true,
 		},
@@ -76,6 +91,19 @@
 			"type": "remote",
 			"url": "https://api.anthropic.com/v1/design/mcp",
 			"enabled": false,
+		},
+		"firecrawl": {
+			"type": "local",
+			"command": ["npx", "-y", "firecrawl-mcp"],
+			"environment": {
+				"FIRECRAWL_API_KEY": "{file:~/.config/opencode/secrets/firecrawl_api_key}",
+			},
+			"enabled": true,
+		},
+		"codegraph": {
+			"type": "local",
+			"command": ["npx", "-y", "@colbymchenry/codegraph", "serve", "--mcp"],
+			"enabled": true,
 		},
 	},
 	"permission": {

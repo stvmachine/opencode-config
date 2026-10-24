@@ -16,6 +16,8 @@ my-opencode-config/
   presets/                    # preset fragments merged into oh-my-opencode-slim.json
     _shared.json              # shared fields: preset, multiplexer, disabled_agents, companion
     openai.json, openai-go.json, sol-kimi.json, kimi.json, free.json
+  skills/                     # vendored agent skills (antfu/skills: vue, nuxt, vite, vitest, pnpm, tsdown)
+                              # registered via skills.paths in opencode.jsonc
   scripts/
     build-presets.js          # merges presets/*.json into oh-my-opencode-slim.json (node, no deps)
   profiles/
@@ -59,11 +61,16 @@ Then adjust the absolute `bin` paths in `profiles/*/ocx.jsonc` — they referenc
 
 ## Environment variables
 
-| Variable | Used by | Notes |
-|----------|---------|-------|
-| `GITHUB_ACCESS_TOKEN` | github MCP server | GitHub personal access token |
-| `HASS_TOKEN` | homeassistant MCP server | Home Assistant long-lived access token |
-| `STITCH_API_KEY` | stitch MCP server | optional — server is disabled by default |
+Secrets are read from files under `~/.config/opencode/secrets/` via opencode's
+`{file:...}` config interpolation (dir `700`, files `600`) — no shell exports
+needed:
+
+| File | Used by | Notes |
+|------|---------|-------|
+| `~/.config/opencode/secrets/hass_token` | homeassistant MCP server | Home Assistant long-lived access token |
+| `~/.config/opencode/secrets/firecrawl_api_key` | firecrawl MCP server | your Firecrawl API key (free tier at firecrawl.dev) |
+| `~/.config/opencode/secrets/github_token` | github MCP server | populate with `gh auth token > ~/.config/opencode/secrets/github_token` (refreshes as gh rotates it) |
+| `~/.config/opencode/secrets/stitch_api_key` | stitch MCP server | optional — server is disabled by default |
 
 ## Usage
 

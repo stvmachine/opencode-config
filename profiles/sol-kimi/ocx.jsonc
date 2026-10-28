@@ -1,8 +1,0 @@
-{
-	"$schema": "https://ocx.kdco.dev/schemas/profile.json",
-	"registries": {},
-	"renameWindow": true,
-	"exclude": ["**/CLAUDE.md", "**/CONTEXT.md", "**/.opencode/**", "**/opencode.json"],
-	"bin": "~/.config/opencode/profiles/bin/oc-sol-kimi",
-	"include": [],
-}

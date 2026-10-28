@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# OCX profile wrapper: openai preset
-source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
-exec opencode --port 0 "$@"

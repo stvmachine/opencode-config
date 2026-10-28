@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# OCX profile wrapper: free preset
-# --port 0 enables opencode-herdr plugin (opencode attach --session <id>)
-source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
-exec opencode --port 0 "$@"

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# OCX profile wrapper: default profile (maps to the sol-kimi preset)
-source "$(dirname "${BASH_SOURCE[0]}")/oc-slim-preset"
-exec opencode "$@"

@@ -1,37 +1,37 @@
 #!/usr/bin/env node
 /**
- * build-presets.js — merge oh-my-opencode-slim preset fragments into
- * the root oh-my-opencode-slim.json.
+ * build-presets.js — merge oh-my-opencode-slim preset fragments into the
+ * config files OpenCode reads.
  *
- * oh-my-opencode-slim only reads ~/.config/opencode/oh-my-opencode-slim.json
- * (plus per-project .opencode/oh-my-opencode-slim.json), so per-preset
- * fragments in presets/ must be merged into a single root config.
+ * Emits two kinds of output:
+ *   1. The global config at ~/.config/opencode/oh-my-opencode-slim.json —
+ *      contains every preset plus the shared fields, used when OpenCode runs
+ *      directly (no OCX profile).
+ *   2. One self-contained config per profile at
+ *      ~/.config/ocx/profiles/<name>/oh-my-opencode-slim.json — contains the
+ *      shared fields plus just that profile's preset (with "preset" set to the
+ *      profile name). OCX 3 points OpenCode's config dir at the profile
+ *      directory (via OPENCODE_CONFIG_DIR), so each profile selects its own
+ *      lineup without the old OH_MY_OPENCODE_SLIM_PRESET wrapper scripts.
  *
  * Usage: node scripts/build-presets.js
  * Requires: Node >= 18, zero dependencies.
  */
 
-const { readFileSync, writeFileSync, readdirSync } = require("node:fs");
+const { readFileSync, writeFileSync, readdirSync, mkdirSync } = require("node:fs");
 const { join } = require("node:path");
 
 const ROOT = join(__dirname, "..");
 const PRESETS_DIR = join(ROOT, "presets");
 const OUTPUT = join(ROOT, "oh-my-opencode-slim.json");
+// Profiles live in this monorepo under ocx/profiles/ (a sibling of the opencode
+// config at the repo root). ~/.config/ocx is symlinked to this ocx/ subdir.
+const OCX_PROFILES_DIR = join(ROOT, "ocx", "profiles");
 
 const SCHEMA = "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json";
 
 // Fixed merge order for deterministic output.
-const PRESET_ORDER = [
-	"trinity",
-	"openai",
-	"openai-go",
-	"claude-work",
-	"sol-kimi",
-	"go-deep-kimi",
-	"kimi",
-	"kimi-go",
-	"free",
-];
+const PRESET_ORDER = ["claude-work", "trinity"];
 
 function readJson(path) {
 	return JSON.parse(readFileSync(path, "utf8"));
@@ -62,19 +62,34 @@ function main() {
 	}
 
 	// Keep key order stable: $schema, preset, presets, then remaining shared fields.
-	const { preset, ...restShared } = shared;
-	const output = {
+	const { preset: defaultPreset, ...restShared } = shared;
+
+	// 1. Global config (all presets).
+	const globalOutput = {
 		$schema: SCHEMA,
-		preset,
+		preset: defaultPreset,
 		presets,
 		...restShared,
 	};
+	writeFileSync(OUTPUT, JSON.stringify(globalOutput, null, 2) + "\n");
 
-	writeFileSync(OUTPUT, JSON.stringify(output, null, 2) + "\n");
+	// 2. Per-profile configs (one preset each, "preset" = profile name).
+	for (const name of merged) {
+		const dir = join(OCX_PROFILES_DIR, name);
+		mkdirSync(dir, { recursive: true });
+		const profileOutput = {
+			$schema: SCHEMA,
+			preset: name,
+			presets: { [name]: presets[name] },
+			...restShared,
+		};
+		writeFileSync(join(dir, "oh-my-opencode-slim.json"), JSON.stringify(profileOutput, null, 2) + "\n");
+	}
+
 	console.log(
 		`Merged presets: ${merged.join(", ")}${skipped.length ? ` (missing: ${skipped.join(", ")})` : ""}`,
 	);
-	console.log(`Wrote ${OUTPUT}`);
+	console.log(`Wrote ${OUTPUT} + ${merged.length} profile config(s) under ${OCX_PROFILES_DIR}`);
 }
 
 main();

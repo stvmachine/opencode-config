@@ -19,3 +19,20 @@ package-lock.json
 
 # OCX runtime state (ownership receipts, profile selection)
 .ocx/
+
+# GSD Core (installed by `npx -y @opengsd/gsd-core@latest --opencode --global`)
+agents/
+command/
+commands/
+gsd-core/
+hooks/
+gsd-file-manifest.json
+gsd-install-state.json
+gsd-migration-journal/
+.gsd-profile
+.gsd-staging/
+skills/gsd-*/
+scripts/changeset/
+scripts/lib/
+scripts/fix-slash-commands.cjs
+scripts/gen-*.cjs

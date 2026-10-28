@@ -45,6 +45,30 @@ ln -s ~/.config/opencode/ocx ~/.config/ocx
 bun ~/.config/opencode/scripts/build-presets.js
 ```
 
+## GSD Core (optional)
+
+To install the GSD workflows and agents on top of this setup:
+
+```bash
+npx -y @opengsd/gsd-core@latest --opencode --global
+```
+
+GSD installs into `~/.config/opencode/`: `agents/`, `commands/`, `gsd-core/`,
+`hooks/`, `plugins/`, `skills/gsd-*/`, a few files under `scripts/`, and its
+manifest/state files. All of these are gitignored, so nothing GSD installs is
+committed. It also writes `~/.gsd/defaults.json`.
+
+The installer also edits `opencode.jsonc`, adding a top-level `mcp.gsd` entry
+and a v1-style `permission` block. The repo already carries the v2 equivalents
+(`mcp.servers.gsd` with `--no-prompts`, plus the `gsd-core/*` read and
+`external_directory` rules in `permissions`), so discard those edits:
+
+```bash
+git -C ~/.config/opencode checkout -- opencode.jsonc
+```
+
+To update, rerun the same command. To remove GSD, run it with `--uninstall`.
+
 ## Usage
 
 ```bash

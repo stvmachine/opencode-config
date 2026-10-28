@@ -72,7 +72,7 @@
 			},
 			"gsd": {
 				"type": "local",
-				"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server"],
+				"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server", "--no-prompts"],
 			},
 			"homeassistant": {
 				"type": "local",

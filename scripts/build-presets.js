@@ -3,7 +3,8 @@
  * build-presets.js — merge oh-my-opencode-slim preset fragments into the
  * config files OpenCode reads.
  *
- * Emits two kinds of output:
+ * Emits two kinds of output, then copies ocx/profiles/ into
+ * ~/.config/ocx/profiles/ (OCX 3 rejects symlinked profile dirs):
  *   1. The global config at ~/.config/opencode/oh-my-opencode-slim.json —
  *      contains every preset plus the shared fields, used when OpenCode runs
  *      directly (no OCX profile).
@@ -18,15 +19,18 @@
  * Requires: Node >= 18, zero dependencies.
  */
 
-const { readFileSync, writeFileSync, readdirSync, mkdirSync } = require("node:fs");
+const { readFileSync, writeFileSync, readdirSync, mkdirSync, lstatSync, unlinkSync, cpSync } = require("node:fs");
 const { join } = require("node:path");
+const { homedir } = require("node:os");
 
 const ROOT = join(__dirname, "..");
 const PRESETS_DIR = join(ROOT, "presets");
 const OUTPUT = join(ROOT, "oh-my-opencode-slim.json");
 // Profiles live in this monorepo under ocx/profiles/ (a sibling of the opencode
-// config at the repo root). ~/.config/ocx is symlinked to this ocx/ subdir.
+// config at the repo root) and are copied into ~/.config/ocx/profiles/: OCX 3
+// rejects symlinks anywhere on its managed path, so it needs real directories.
 const OCX_PROFILES_DIR = join(ROOT, "ocx", "profiles");
+const OCX_HOME = join(process.env.XDG_CONFIG_HOME || join(homedir(), ".config"), "ocx");
 
 const SCHEMA = "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json";
 
@@ -90,6 +94,27 @@ function main() {
 		`Merged presets: ${merged.join(", ")}${skipped.length ? ` (missing: ${skipped.join(", ")})` : ""}`,
 	);
 	console.log(`Wrote ${OUTPUT} + ${merged.length} profile config(s) under ${OCX_PROFILES_DIR}`);
+
+	syncProfiles();
+}
+
+// 3. Copy every repo profile into OCX's real profiles dir. Overwrites files the
+// repo owns and leaves everything else (OCX's .ocx/ state, profiles created with
+// `ocx profile add`) untouched. Replaces the old ~/.config/ocx symlink if present.
+function syncProfiles() {
+	try {
+		if (lstatSync(OCX_HOME).isSymbolicLink()) unlinkSync(OCX_HOME);
+	} catch (err) {
+		if (err.code !== "ENOENT") throw err;
+	}
+	const target = join(OCX_HOME, "profiles");
+	const names = readdirSync(OCX_PROFILES_DIR, { withFileTypes: true })
+		.filter((d) => d.isDirectory())
+		.map((d) => d.name);
+	for (const name of names) {
+		cpSync(join(OCX_PROFILES_DIR, name), join(target, name), { recursive: true, force: true });
+	}
+	console.log(`Synced ${names.length} profile(s) to ${target}`);
 }
 
 main();

@@ -1,7 +1,7 @@
 {
 	"name": "my-opencode-config",
 	"version": "1.0.0",
-	"description": "Personal OpenCode configuration: the main `opencode.jsonc`, OCX profiles with wrapper scripts, and oh-my-opencode-slim presets — kept as fragments and merged by a small build script.",
+	"description": "Personal OpenCode configuration: the main `opencode.jsonc`, OCX 3 profiles, and oh-my-opencode-slim presets — kept as fragments and merged by a small build script.",
 	"keywords": [],
 	"homepage": "https://github.com/stvmachine/opencode-config#readme",
 	"bugs": {

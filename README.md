@@ -18,7 +18,7 @@ OpenCode v2 + OCX 3 config monorepo. The repo root is the OpenCode config
   scripts/build-presets.js  # merges presets/*.json into the configs
   skills/                   # vendored agent skills (antfu/skills)
   docs/
-  ocx/                      # OCX 3 profiles (~/.config/ocx -> this dir)
+  ocx/                      # OCX 3 profiles (copied to ~/.config/ocx by build-presets.js)
     profiles/
       claude-work/
       trinity/
@@ -30,19 +30,37 @@ OpenCode v2 + OCX 3 config monorepo. The repo root is the OpenCode config
 - [ocx](https://ocx.kdco.dev) (OCX 3 preview): `bun add --global ocx@next`
 - oh-my-opencode-slim v3 (loaded as a plugin)
 - Bun (or Node >= 18) — for rebuilding the preset configs
+- Node >= 24 with npm — `npx` launches the GitHub, Firecrawl, codegraph, and
+  GSD MCP servers, and runs the GSD installer. With the dotfiles' nvm:
+  `nvm install 24 && nvm alias default 24`
 
 ## Install
 
 Managed by `stvmachine/dotfiles_v3` → `opencode/install.fish`, which clones this
-repo to `~/.config/opencode`, symlinks `~/.config/ocx` → `./ocx`, rebuilds the
-presets, and installs `ocx@next`.
+repo to `~/.config/opencode`, rebuilds the presets (which also copies the
+profiles into `~/.config/ocx/profiles/`), and installs `ocx@next`.
+
+OCX 3 rejects symlinks on its managed path, so `~/.config/ocx` is a real
+directory holding copies. Edit profiles in this repo, never in
+`~/.config/ocx`: rerunning `build-presets.js` overwrites the copies.
 
 Manual:
 
 ```bash
 git clone git@github-personal:stvmachine/opencode-config.git ~/.config/opencode
-ln -s ~/.config/opencode/ocx ~/.config/ocx
 bun ~/.config/opencode/scripts/build-presets.js
+bun add --global ocx@next
+```
+
+### Secrets
+
+API keys are read from `secrets/` (gitignored, never committed), one key per
+file. Create the ones for the providers and MCP servers you use, or those
+entries fail to resolve at startup:
+
+```
+secrets/openai_api_key      secrets/github_token       secrets/firecrawl_api_key
+secrets/hass_token          secrets/stitch_api_key
 ```
 
 ## GSD Core (optional)
@@ -67,7 +85,11 @@ and a v1-style `permission` block. The repo already carries the v2 equivalents
 git -C ~/.config/opencode checkout -- opencode.jsonc
 ```
 
-To update, rerun the same command. To remove GSD, run it with `--uninstall`.
+That restores the whole file from the last commit, so commit any of your own
+`opencode.jsonc` changes before running the installer.
+
+To update, rerun the install command, then the same `git checkout`. To remove
+GSD, run it with `--uninstall`.
 
 ## Usage
 
@@ -84,3 +106,7 @@ Each profile is a self-contained native config dir under `ocx/profiles/`; its
 1. Edit `presets/<name>.json` (or `_shared.json` for shared settings).
 2. Run `bun scripts/build-presets.js` — regenerates `oh-my-opencode-slim.json`
    (global) and each profile's `ocx/profiles/<name>/oh-my-opencode-slim.json`.
+
+A new preset also needs its name added to `PRESET_ORDER` in
+`scripts/build-presets.js`; files not listed there are skipped. See
+`docs/PROFILES.md` → "Adding a Profile" for the full steps.

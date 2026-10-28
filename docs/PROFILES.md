@@ -2,8 +2,9 @@
 
 ## Architecture
 
-OCX 3 profiles live in a separate repo at `~/.config/ocx/profiles/<name>/`.
-Each is a self-contained native OpenCode v2 config directory. The
+OCX 3 profiles live in this repo under `ocx/profiles/<name>/`, reached as
+`~/.config/ocx/profiles/<name>/` via the `~/.config/ocx` → `~/.config/opencode/ocx`
+symlink. Each is a self-contained native OpenCode v2 config directory. The
 `oh-my-opencode-slim.json` inside each profile carries the shared settings plus
 that profile's preset, with `preset` set to the profile name — so launching a
 profile selects its model lineup with no wrapper scripts or env-var tricks.
@@ -37,7 +38,9 @@ The shared settings (`preset` default, `multiplexer`, `council`, `companion`,
 
 1. Add `presets/<name>.json` with the agent → model map.
 2. Add `<name>` to `PRESET_ORDER` in `scripts/build-presets.js`.
-3. In the `ocx-config` repo, create `profiles/<name>/` with `ocx.jsonc`
-   (OCX v3 schema), `opencode.jsonc`, and `AGENTS.md`.
+3. Create `ocx/profiles/<name>/` with `ocx.jsonc` (OCX v3 schema),
+   `opencode.jsonc`, and `AGENTS.md` — copy an existing profile as a starting
+   point.
 4. Run `bun scripts/build-presets.js` to generate the profile's
-   `oh-my-opencode-slim.json`, then commit both repos.
+   `oh-my-opencode-slim.json`, then commit.
+5. Launch it with `ocx oc -p <name>`.

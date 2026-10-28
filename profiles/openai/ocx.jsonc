@@ -9,6 +9,6 @@
 		"**/opencode.jsonc",
 		"**/opencode.json",
 	],
-	"bin": "/Users/estvmachine/.config/opencode/profiles/bin/oc-openai",
+	"bin": "~/.config/opencode/profiles/bin/oc-openai",
 	"include": [],
 }

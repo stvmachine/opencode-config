@@ -3,6 +3,6 @@
 	"registries": {},
 	"renameWindow": true,
 	"exclude": ["**/CLAUDE.md", "**/CONTEXT.md", "**/.opencode/**", "**/opencode.json"],
-	"bin": "/Users/estvmachine/.config/opencode/profiles/bin/oc-sol-kimi",
+	"bin": "~/.config/opencode/profiles/bin/oc-sol-kimi",
 	"include": [],
 }

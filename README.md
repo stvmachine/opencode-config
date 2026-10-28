@@ -40,24 +40,19 @@ my-opencode-config/
 
 ## Install
 
+This repo is meant to live *as* your `~/.config/opencode` — the dotfiles repo
+clones it there (see `stvmachine/dotfiles_v3` → `opencode/install.fish`). Manual
+setup is just:
+
 ```bash
-git clone <this-repo> my-opencode-config
-cd my-opencode-config
+git clone git@github.com:stvmachine/opencode-config.git ~/.config/opencode
+cd ~/.config/opencode
 node scripts/build-presets.js   # regenerates oh-my-opencode-slim.json from presets/
-
-# main config (symlink or copy)
-ln -s "$PWD/opencode.jsonc"   ~/.config/opencode/opencode.jsonc
-ln -s "$PWD/oh-my-opencode-slim.json" ~/.config/opencode/oh-my-opencode-slim.json
-ln -s "$PWD/ocx.jsonc"        ~/.config/opencode/ocx.jsonc
-# tui.json / settings.json optional — copy only if you want them
-
-# profiles
-cp -R profiles/ ~/.config/opencode/profiles/
 ```
 
-Then adjust the absolute `bin` paths in `profiles/*/ocx.jsonc` — they reference
-`/Users/estvmachine` and must point at your own install location
-(e.g. `~/.config/opencode/profiles/bin/oc-<name>`).
+All paths are `~`-relative, so no per-machine edits are needed. Machine-local
+files (`service.json`, `secrets/`, `plugins/herdr-agent-state.js`) are
+git-ignored and created by OpenCode at runtime.
 
 ## Environment variables
 

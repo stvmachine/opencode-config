@@ -43,7 +43,7 @@
 		},
 	},
 	"lsp": true,
-	"skills": ["/Users/estvmachine/Projects/personal/my-opencode-config/skills"],
+	"skills": ["~/.config/opencode/skills"],
 	"mcp": {
 		"servers": {
 			"supabase": {

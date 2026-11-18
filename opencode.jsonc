@@ -1,17 +1,7 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-	"plugins": [
-		"@warp-dot-dev/opencode-warp",
-		"opencode-herdr",
-		"opencode-openai-codex-auth",
-		"compound-engineering@git+https://github.com/EveryInc/compound-engineering-plugin.git",
-		"oh-my-opencode-slim",
-		"opencode-with-claude",
-	],
+	"plugins": ["oh-my-opencode-slim", "opencode-with-claude"],
 	"agents": {
-		"explore": {
-			"disabled": true,
-		},
 		"general": {
 			"disabled": true,
 		},
@@ -21,11 +11,6 @@
 			"settings": {
 				"baseURL": "http://127.0.0.1:3456",
 				"apiKey": "dummy",
-			},
-		},
-		"openai": {
-			"settings": {
-				"apiKey": "{file:~/.config/opencode/secrets/openai_api_key}",
 			},
 		},
 		"kimi-for-coding": {
@@ -50,11 +35,6 @@
 				"type": "remote",
 				"url": "https://mcp.supabase.com/mcp",
 			},
-			"shopify-dev-mcp": {
-				"type": "local",
-				"command": ["npx", "-y", "@shopify/dev-mcp@latest"],
-				"disabled": true,
-			},
 			"github": {
 				"type": "local",
 				"command": ["npx", "-y", "@modelcontextprotocol/server-github"],
@@ -62,30 +42,39 @@
 					"GITHUB_PERSONAL_ACCESS_TOKEN": "{file:~/.config/opencode/secrets/github_token}",
 				},
 			},
-			"stitch": {
-				"type": "remote",
-				"url": "https://stitch.googleapis.com/mcp",
-				"disabled": true,
-				"headers": {
-					"X-Goog-Api-Key": "{file:~/.config/opencode/secrets/stitch_api_key}",
-				},
-			},
+			// Disabled: re-enable by uncommenting (needs secrets/stitch_api_key).
+			// "stitch": {
+			// 	"type": "remote",
+			// 	"url": "https://stitch.googleapis.com/mcp",
+			// 	"headers": {
+			// 		"X-Goog-Api-Key": "{file:~/.config/opencode/secrets/stitch_api_key}",
+			// 	},
+			// },
 			"gsd": {
 				"type": "local",
-				"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server", "--no-prompts"],
+				"command": [
+					"npx",
+					"-y",
+					"-p",
+					"@opengsd/gsd-core",
+					"gsd-mcp-server",
+					"--no-prompts",
+				],
 			},
-			"homeassistant": {
-				"type": "local",
-				"command": ["hass-mcp"],
-				"environment": {
-					"HASS_URL": "http://192.168.20.30:8123",
-					"HASS_TOKEN": "{file:~/.config/opencode/secrets/hass_token}",
-				},
-			},
+			// Disabled: re-enable by uncommenting (needs secrets/hass_token).
+			// "homeassistant": {
+			// 	"type": "local",
+			// 	"command": ["hass-mcp"],
+			// 	"environment": {
+			// 		"HASS_URL": "http://192.168.20.30:8123",
+			// 		"HASS_TOKEN": "{file:~/.config/opencode/secrets/hass_token}",
+			// 	},
+			// },
+			// Stdio bridge: Claude Design rejects opencode's built-in OAuth (no DCR/metadata).
+			// One-time sign-in (re-run if it expires): node ~/.config/opencode/scripts/claude-design-mcp.mjs login
 			"claude_design": {
-				"type": "remote",
-				"url": "https://api.anthropic.com/v1/design/mcp",
-				"disabled": true,
+				"type": "local",
+				"command": ["node", "{env:HOME}/.config/opencode/scripts/claude-design-mcp.mjs"],
 			},
 			"firecrawl": {
 				"type": "local",
@@ -98,6 +87,22 @@
 				"type": "local",
 				"command": ["npx", "-y", "@colbymchenry/codegraph", "serve", "--mcp"],
 			},
+			// sooperset/mcp-atlassian, Confluence only (no JIRA_* vars). Drop READ_ONLY_MODE to allow writes.
+			"confluence": {
+				"type": "local",
+				"command": ["uvx", "mcp-atlassian"],
+				"environment": {
+					"CONFLUENCE_URL": "https://socialtraders.atlassian.net/wiki",
+					"CONFLUENCE_USERNAME": "esteban.campos@socialtraders.com.au",
+					"CONFLUENCE_API_TOKEN": "{file:~/.config/opencode/secrets/atlassian_key}",
+					"READ_ONLY_MODE": "true",
+				},
+			},
+		},
+		"gsd": {
+			"type": "local",
+			"command": ["npx", "-y", "-p", "@opengsd/gsd-core", "gsd-mcp-server", "--no-prompts"],
+			"enabled": true,
 		},
 	},
 	"permissions": [
@@ -113,4 +118,12 @@
 			"effect": "allow",
 		},
 	],
+	"permission": {
+		"read": {
+			"~/.config/opencode/gsd-core/*": "allow",
+		},
+		"external_directory": {
+			"~/.config/opencode/gsd-core/*": "allow",
+		},
+	},
 }

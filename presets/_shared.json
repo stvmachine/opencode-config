@@ -13,14 +13,31 @@
 		"default_preset": "trinity",
 		"presets": {
 			"trinity": {
-				"claude": { "model": "anthropic/claude-sonnet-5-5", "variant": "high" },
-				"openai": { "model": "openai/gpt-5.6-terra", "variant": "high" },
-				"opencode": { "model": "opencode-go/glm-5.3", "variant": "high" }
+				"claude": {
+					"model": ["anthropic/claude-opus-5-5"],
+					"variant": "high"
+				},
+				"openai": {
+					"model": ["openai/gpt-6-sol"],
+					"variant": "high"
+				},
+				"opencode": {
+					"model": [
+						"opencode/iceman-free",
+						"opencode/big-pickle",
+						"opencode/beam-free",
+						{ "id": "opencode-go/glm-5.3", "variant": "high" }
+					]
+				},
+				"kimi": {
+					"model": ["kimi-for-coding/k3.1-pro"],
+					"variant": "high"
+				}
 			}
 		}
 	},
 	"companion": {
-		"enabled": true,
+		"enabled": false,
 		"position": "bottom-right",
 		"size": "medium",
 		"gifPack": "default",

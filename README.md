@@ -9,7 +9,7 @@ OpenCode v2 + OCX 3 config monorepo. The repo root is the OpenCode config
 ```
 ./
   opencode.jsonc            # OpenCode global config (plugins, providers, MCP, permissions)
-  oh-my-opencode-slim.json  # generated: shared settings + all presets
+  oh-my-opencode-slim.json  # generated (gitignored): shared settings + all presets
   cli.json / tui.json[c]    # CLI + TUI plugin config
   presets/                  # preset fragments (source for oh-my-opencode-slim.json)
     _shared.json            # shared: multiplexer, council, companion, fallback, default preset
@@ -59,9 +59,12 @@ file. Create the ones for the providers and MCP servers you use, or those
 entries fail to resolve at startup:
 
 ```
-secrets/openai_api_key      secrets/github_token       secrets/firecrawl_api_key
-secrets/hass_token          secrets/stitch_api_key
+secrets/github_token        secrets/firecrawl_api_key  secrets/hass_token
+secrets/stitch_api_key
 ```
+
+OpenAI signs in with a ChatGPT subscription through `opencode auth login`, so
+it needs no key file.
 
 ## GSD Core (optional)
 

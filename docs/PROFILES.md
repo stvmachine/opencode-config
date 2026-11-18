@@ -46,5 +46,6 @@ The shared settings (`preset` default, `multiplexer`, `council`, `companion`,
    `opencode.jsonc`, and `AGENTS.md` — copy an existing profile as a starting
    point.
 4. Run `bun scripts/build-presets.js` to generate the profile's
-   `oh-my-opencode-slim.json` and copy it into `~/.config/ocx`, then commit.
+   `oh-my-opencode-slim.json` (gitignored) and copy the profile into
+   `~/.config/ocx`, then commit the sources.
 5. Launch it with `ocx oc -p <name>`.
